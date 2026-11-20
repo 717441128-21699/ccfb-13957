@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>陶瓷碎片虚拟拼接工作台</title>
+  <link rel="stylesheet" href="./src/ui/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">陶</span>
+      <div>
+        <h1>陶瓷碎片虚拟拼接工作台</h1>
+        <p class="sub">断口起伏匹配 · 胎壁厚度校验 · 釉面防反 · 对称补配</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="btn-load-demo" class="btn primary">载入示例 30 片罐</button>
+      <label class="btn">
+        导入扫描网格
+        <input id="file-obj" type="file" accept=".obj" multiple hidden />
+      </label>
+      <button id="btn-export-svg" class="btn" disabled>导出线图 SVG</button>
+      <button id="btn-export-json" class="btn" disabled>导出测量 JSON</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <h2>1. 断口分析与配对</h2>
+        <div class="row">
+          <button id="btn-analyze" class="btn primary" disabled>分析断口</button>
+          <button id="btn-match" class="btn primary" disabled>全自动配对</button>
+        </div>
+        <div class="progress-wrap" hidden id="progress-wrap">
+          <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+          <span id="progress-text" class="progress-text">准备中…</span>
+        </div>
+        <div class="metrics" id="match-metrics"></div>
+      </section>
+
+      <section class="panel">
+        <h2>2. 候选确认</h2>
+        <div class="hint">按得分排序，点击"接受"拼合；接受后整组跟随移动。</div>
+        <div id="candidate-list" class="candidate-list">
+          <div class="empty">尚无候选</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>3. 补配与测量</h2>
+        <div class="row">
+          <button id="btn-fill" class="btn" disabled>对称补配缺口</button>
+          <button id="btn-measure" class="btn" disabled>器形测量</button>
+        </div>
+        <div id="measure-output" class="measure-output"></div>
+      </section>
+
+      <section class="panel">
+        <h2>显示</h2>
+        <label class="check"><input type="checkbox" id="chk-fill" checked /> 显示补配部分（青蓝）</label>
+        <label class="check"><input type="checkbox" id="chk-labels" checked /> 显示出土编号</label>
+        <label class="check"><input type="checkbox" id="chk-outline" /> 显示外轮廓线</label>
+        <label class="check">着色：
+          <select id="sel-color">
+            <option value="0">按表面（釉/胎/断口）</option>
+            <option value="2">按碎片分色</option>
+          </select>
+        </label>
+        <div class="row">
+          <button id="btn-explode" class="btn">分解视图</button>
+          <button id="btn-reset-view" class="btn">复位视角</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="viewport">
+      <canvas id="glcanvas"></canvas>
+      <div id="label-layer" class="label-layer"></div>
+      <div id="shard-tooltip" class="tooltip" hidden></div>
+      <div class="viewport-hint">左键旋转 · 滚轮缩放 · 右键平移 · 点击碎片查看编号</div>
+    </section>
+
+    <aside class="sidebar right">
+      <section class="panel">
+        <h2>碎片清单</h2>
+        <div id="shard-list" class="shard-list">
+          <div class="empty">尚未载入数据</div>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>缝隙质量</h2>
+        <div id="gap-output" class="gap-output"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script type="module" src="./src/ui/main.ts"></script>
+</body>
+</html>
